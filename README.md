@@ -11,7 +11,7 @@ The plugin requires a labelkey.txt file stored in either ~/Library/Application S
 
 The labelkey.txt file requires the formatting `colorName=meaning`, with each key on a newline and with no space surrounding the '='. An example, with the defined colorNames is given below:
 
-`red=Red
+```red=Red
 orange=Orange
 brown=Brown
 yellow=Yellow
@@ -23,4 +23,4 @@ purple=Purple
 magenta=Magenta
 lightGray=Light Gray
 charcoal=Charcoal
-`
+```
