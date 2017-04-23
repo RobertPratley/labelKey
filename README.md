@@ -1,5 +1,6 @@
 # Label Key
 
+## *This plugin is in beta and does not work fully as intended.
 *This is a palette plugin for the [Glyphs font editor](http://glyphsapp.com/).*  
 Adds a new palette to the sidebar displaying a user defined key for Glyphs' colour labelling. 
 
