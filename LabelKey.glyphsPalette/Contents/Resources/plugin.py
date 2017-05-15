@@ -32,23 +32,25 @@ class labelKey(PalettePlugin):
 		self.paletteView.frame.swatches = CanvasView((10, 0, -10, 0), self)
 		
 		self.dialog = self.paletteView.frame.getNSView()
-
-	colours = {
-	"red": [0.96, 0.17, 0.17, 1],
-	"orange": [1, 0.6, 0.17, 1],
-	"brown": [0.58, 0.37, 0.17, 1],
-	"yellow": [0.98, 0.87, 0.1, 1],
-	"lightGreen": [0.58, 0.87, 0, 1],
-	"darkGreen": [0.24, 0.57, 0.32, 1],
-	"lightBlue": [0.24, 0.73, 0.85, 1],
-	"darkBlue": [0, 0.23, 0.85, 1],
-	"purple": [0.54, 0, 0.77, 1],
-	"magenta": [1, 0, 0.9, 1],
-	"lightGray": [0.7, 0.7, 0.7, 1],
-	"charcoal": [0.3, 0.3, 0.3, 1]}
-
-
-
+		
+		colorsData = Glyphs.defaults["LabelColors"]
+		colorKeys = ["red",
+					"orange",
+					"brown",
+					"yellow",
+					"lightGreen",
+					"darkGreen",
+					"lightBlue",
+					"darkBlue",
+					"purple",
+					"magenta",
+					"lightGray",
+					"charcoal"]
+		colours = []
+		for colorData in colorsData:
+			color = NSUnarchiver.unarchiveObjectWithData_(colorData)
+			colours.append(color)
+		self.colours = dict(zip(colorKeys, colours))
 
 	def update(self, sender):
 		if hasattr(self.paletteView.frame, 'labels'):
@@ -64,8 +66,7 @@ class labelKey(PalettePlugin):
 		height = view.bounds().size.height
 		order = self.mapKeys(self.setKeyFile())[1]
 		for num, i in enumerate(order, 1):
-			r, g, b, a = self.colours[i]
-			NSColor.colorWithCalibratedRed_green_blue_alpha_(r, g, b, a).set()
+			self.colours[i].set()
 			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * 16)), (keyDiameter, keyDiameter))).fill()
 
 	def setKeyFile( self ):
