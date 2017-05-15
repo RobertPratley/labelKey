@@ -53,7 +53,7 @@ class labelKey(PalettePlugin):
 	def update(self, sender):
 		if hasattr(self.paletteView.frame, 'labels'):
 			delattr(self.paletteView.frame, 'labels')
-		colourLabels, order = self.mapKeys(self.setKeyFile())
+		colourLabels, order = self.mapKeys(self.getKeyFile())
 		self.paletteView.frame.labels = Group((27, 3, -10, 0))
 		for num, i in enumerate(order):
 			setattr(self.paletteView.frame.labels, i, TextBox((0, num * 16, 0, 22), colourLabels[i], sizeStyle="small"))
@@ -62,17 +62,21 @@ class labelKey(PalettePlugin):
 	def draw( self, view ):
 		keyDiameter = 10
 		height = view.bounds().size.height
-		order = self.mapKeys(self.setKeyFile())[1]
+		order = self.mapKeys(self.getKeyFile())[1]
 		for num, i in enumerate(order, 1):
 			self.colours[i].set()
 			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * 16)), (keyDiameter, keyDiameter))).fill()
 
-	def setKeyFile( self ):
-		thisDirPath = os.path.dirname(Glyphs.font.filepath)
-		localKeyFile = thisDirPath + '/labelkey.txt'
-		if exists(localKeyFile):
-			keyFile = localKeyFile
-		else:
+	def getKeyFile( self ):
+		keyFile = None
+		try:
+			thisDirPath = os.path.dirname(self.windowController().document().font.filepath)
+			localKeyFile = thisDirPath + '/labelkey.txt'
+			if os.path.exists(localKeyFile):
+				keyFile = localKeyFile
+		except:
+			pass
+		if keyFile is None:
 			keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/Info/labelkey.txt')
 		return keyFile
 				
