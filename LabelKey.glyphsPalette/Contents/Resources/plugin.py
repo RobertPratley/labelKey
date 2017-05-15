@@ -89,7 +89,6 @@ class labelKey(PalettePlugin):
 				label = re.search(r"(?<=\=).*", line).group(0)
 				colourLabels[colour] = label
 				order.append(colour)
-		file.close()
 		print colourLabels, order
 		return colourLabels, order
 	
