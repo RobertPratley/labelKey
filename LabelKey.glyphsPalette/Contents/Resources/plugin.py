@@ -12,9 +12,7 @@
 ###########################################################################################################
 from vanilla import *
 import re
-import os.path
-from os.path import expanduser
-from os.path import exists
+import os
 from GlyphsApp.plugins import *
 from GlyphsApp.UI import *
 
@@ -75,7 +73,7 @@ class labelKey(PalettePlugin):
 		if exists(localKeyFile):
 			keyFile = localKeyFile
 		else:
-			keyFile = '{0}{1}'.format(os.path.abspath(expanduser('~')), '/Library/Application Support/Glyphs/Info/labelkey.txt')
+			keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/Info/labelkey.txt')
 		return keyFile
 				
 	def mapKeys( self, keyFile ):
