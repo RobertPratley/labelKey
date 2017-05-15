@@ -93,12 +93,12 @@ class labelKey(PalettePlugin):
 		print colourLabels, order
 		return colourLabels, order
 	
-
-	def start(self):
-		Glyphs.addCallback(self.update, DOCUMENTACTIVATED)
-
-	def __del__(self):
-		Glyphs.removeCallback(self.update)
+	def setWindowController_(self, windowController):
+		try:
+			self._windowController = windowController
+			self.update(None)
+		except:
+			self.logError(traceback.format_exc())
 
 	def __file__(self):
 		"""Please leave this method unchanged"""
