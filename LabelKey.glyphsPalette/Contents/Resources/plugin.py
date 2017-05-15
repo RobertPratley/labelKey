@@ -13,6 +13,7 @@
 from vanilla import *
 import re
 import os
+import codecs
 from GlyphsApp.plugins import *
 from GlyphsApp.UI import *
 
@@ -83,7 +84,7 @@ class labelKey(PalettePlugin):
 	def mapKeys( self, keyFile ):
 		order = []
 		colourLabels = {}
-		with open(keyFile) as file:
+		with codecs.open(keyFile, "r", "utf-8") as file:
 			for line in file:
 				colour = re.match(r".*?(?=\=)", line).group(0)
 				label = re.search(r"(?<=\=).*", line).group(0)
