@@ -58,7 +58,6 @@ class labelKey(PalettePlugin):
 		self.paletteView.frame.labels = Group((27, 3, -10, 0))
 		for num, i in enumerate(order):
 			setattr(self.paletteView.frame.labels, i, TextBox((0, num * 16, 0, 22), colourLabels[i], sizeStyle="small"))
-			print i
 
 	def draw( self, view ):
 		keyDiameter = 10
@@ -80,7 +79,7 @@ class labelKey(PalettePlugin):
 		if keyFile is None:
 			keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/Info/labelkey.txt')
 		return keyFile
-				
+
 	def mapKeys( self, keyFile ):
 		order = []
 		colourLabels = {}
@@ -90,7 +89,7 @@ class labelKey(PalettePlugin):
 				label = re.search(r"(?<=\=).*", line).group(0)
 				colourLabels[colour] = label
 				order.append(colour)
-		print colourLabels, order
+		#print "__colourLabels:", colourLabels, order
 		return colourLabels, order
 	
 	def setWindowController_(self, windowController):
