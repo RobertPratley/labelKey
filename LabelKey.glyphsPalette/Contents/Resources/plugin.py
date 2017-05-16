@@ -54,16 +54,15 @@ class labelKey(PalettePlugin):
 	def update(self, sender):
 		if hasattr(self.paletteView.frame, 'labels'):
 			delattr(self.paletteView.frame, 'labels')
-		colourLabels, order = self.mapKeys(self.getKeyFile())
+		colourLabels, self.order = self.mapKeys(self.getKeyFile())
 		self.paletteView.frame.labels = Group((27, 3, -10, 0))
-		for num, i in enumerate(order):
+		for num, i in enumerate(self.order):
 			setattr(self.paletteView.frame.labels, i, TextBox((0, num * 16, 0, 22), colourLabels[i], sizeStyle="small"))
 
 	def draw( self, view ):
 		keyDiameter = 10
 		height = view.bounds().size.height
-		order = self.mapKeys(self.getKeyFile())[1]
-		for num, i in enumerate(order, 1):
+		for num, i in enumerate(self.order, 1):
 			self.colours[i].set()
 			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * 16)), (keyDiameter, keyDiameter))).fill()
 
