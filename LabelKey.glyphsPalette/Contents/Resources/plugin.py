@@ -22,11 +22,12 @@ class labelKey(PalettePlugin):
 
 	def settings( self ):
 		self.name = 'Label Key'
-		width = 160
-		elementHeight = 17
-		self.height = 11 * elementHeight
-		self.paletteView = Window((width, self.height + 10))
-		self.paletteView.frame = Group((0, 0, width, self.height + 10))
+		self.width = 160
+		self.elementHeight = 16
+		keyQuantity = 12
+		self.height = keyQuantity * self.elementHeight
+		self.paletteView = Window((self.width, self.height + 10))
+		self.paletteView.frame = Group((0, 0, self.width, self.height + 5))
 		
 		self.paletteView.frame.swatches = CanvasView((10, 0, -10, 0), self)
 		
@@ -55,16 +56,18 @@ class labelKey(PalettePlugin):
 		if hasattr(self.paletteView.frame, 'labels'):
 			delattr(self.paletteView.frame, 'labels')
 		colourLabels, self.order = self.mapKeys(self.getKeyFile())
-		self.paletteView.frame.labels = Group((27, 3, -10, 0))
+		self.paletteView.frame.labels = Group((27, 4, -10, 0))
 		for num, i in enumerate(self.order):
-			setattr(self.paletteView.frame.labels, i, TextBox((0, num * 16, 0, 22), colourLabels[i], sizeStyle="small"))
+			setattr(self.paletteView.frame.labels, i, TextBox((0, num * self.elementHeight, 0, 22), colourLabels[i], sizeStyle="small"))
+		newHeight = self.elementHeight * len(self.order)
+		self.paletteView.frame.resize(self.width, newHeight + 10)
 
 	def draw( self, view ):
 		keyDiameter = 10
 		height = view.bounds().size.height
 		for num, i in enumerate(self.order, 1):
 			self.colours[i].set()
-			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * 16)), (keyDiameter, keyDiameter))).fill()
+			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
 
 	def getKeyFile( self ):
 		keyFile = None

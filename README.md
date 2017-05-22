@@ -1,10 +1,7 @@
 # Label Key
 *This is a palette plugin for the [Glyphs font editor](http://glyphsapp.com/).*
-
-
-### *Note: This plugin is in beta and does not work fully as intended*.
   
-Adds a new palette to the sidebar displaying a user defined key for Glyphs' colour labelling. 
+It adds a new palette to the sidebar displaying a user defined key for Glyphs' colour labelling. 
 
 ![Label Key](https://github.com/RobertPratley/labelKey/blob/master/images/labelKeyExample.png "Label Key")
 
