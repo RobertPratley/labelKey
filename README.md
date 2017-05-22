@@ -26,3 +26,5 @@ magenta=Magenta
 lightGray=Light Gray
 charcoal=Charcoal
 ```
+
+*Thanks to Georg Seifert for helping with bug fixing.
