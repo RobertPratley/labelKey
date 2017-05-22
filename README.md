@@ -3,7 +3,8 @@
   
 It adds a new palette to the sidebar displaying a user defined key for Glyphs' colour labelling. 
 
-![Label Key](https://github.com/RobertPratley/labelKey/blob/master/images/labelKeyExample.png "Label Key")
+<img src="https://github.com/RobertPratley/labelKey/blob/master/images/labelKeyExample.png" width="350"/>
+
 
 ### How to use
 
