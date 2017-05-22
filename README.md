@@ -10,7 +10,7 @@ It adds a new palette to the sidebar displaying a user defined key for Glyphs' c
 
 The plugin requires a labelkey.txt file stored in either ~/Library/Application Support/Glyphs/info/ or the same directory as the current Glyphs source file. Preference is given to the latter allowing for the sharing of the labelkey.txt file with glyphs source files to retain labelling information between project contributors. 
 
-The labelkey.txt file requires the formatting `colorName=meaning`, with each key on a newline and with no space surrounding the '='. An example, with the defined colorNames is given below:
+The labelkey.txt file requires the formatting `colorName=meaning`, with each key on a newline and with no space surrounding the '='. The order of the key will follow the order specified in the text file. An example, with the defined colorNames is given below. 
 
 ```
 red=Red
