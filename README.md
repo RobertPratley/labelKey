@@ -3,7 +3,11 @@
   
 It adds a new palette to the sidebar displaying a user defined key for Glyphs' colour labelling. 
 
+<<<<<<< HEAD
 <img src="https://github.com/RobertPratley/labelKey/blob/master/labelKeyExample.png" width="350"/>
+=======
+<img src="https://github.com/RobertPratley/labelKey/blob/master/images/labelKeyExample.png" width="350"/>
+>>>>>>> 5ea6344e0533d4aebac85c13104afe5d257ff56a
 
 
 ### How to use
@@ -27,4 +31,8 @@ lightGray=Light Gray
 charcoal=Charcoal
 ```
 
+<<<<<<< HEAD
 *Thanks to Georg Seifert for helping with bug fixing.*
+=======
+*Thanks to Georg Seifert for helping with bug fixing.*
+>>>>>>> 5ea6344e0533d4aebac85c13104afe5d257ff56a
