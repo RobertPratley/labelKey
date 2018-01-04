@@ -17,15 +17,15 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleVersion</key>
-	<string>0.1</string>
+	<string>2.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1</string>
+	<string>2.0</string>
 	<key>UpdateFeedURL</key>
-	<string>https://github.com/RobertPratley/glyphplugintest/blob/master/LabelKey.glyphsPalette/Contents/Info.plist</string>
+	<string>https://github.com/RobertPratley/labelKey/LabelKey.glyphsPalette/Contents/Info.plist</string>
 	<key>productPageURL</key>
-	<string>https://github.com/RobertPratley/glyphplugintest</string>
+	<string>https://github.com/RobertPratley/labelKey</string>
 	<key>productReleaseNotes</key>
-	<string>Alpha</string>
+	<string></string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, RobertPratley, 2017</string>
 	<key>NSPrincipalClass</key>
