@@ -103,6 +103,7 @@ class labelKey(PalettePlugin):
 			self._windowController = windowController
 			self.update(None)
 		except:
+			import traceback
 			self.logError(traceback.format_exc())
 
 	def __file__(self):
