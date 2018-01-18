@@ -66,12 +66,12 @@ class labelKey(PalettePlugin):
 		keyDiameter = 10
 		height = view.bounds().size.height
 		for num, i in enumerate(self.order, 1):
-                    if bool(re.search(r"\d", i)):
-                        duplicateColour = re.match(r".*?(?=\d)", i).group(0)
-                        self.colours[duplicateColour].set()
-                    else:    
-			self.colours[i].set()
-		    NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
+			if bool(re.search(r"\d", i)):
+				duplicateColour = re.match(r".*?(?=\d)", i).group(0)
+				self.colours[duplicateColour].set()
+			else:
+				self.colours[i].set()
+			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
 
 	def getKeyFile( self ):
 		keyFile = None
