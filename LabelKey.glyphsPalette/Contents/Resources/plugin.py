@@ -89,12 +89,13 @@ class labelKey(PalettePlugin):
 	def mapKeys( self, keyFile ):
 		order = []
 		colourLabels = {}
-		with codecs.open(keyFile, "r", "utf-8") as file:
-			for line in file:
-				colour = re.match(r".*?(?=\=)", line).group(0)
-				label = re.search(r"(?<=\=).*", line).group(0)
-				colourLabels[colour] = label
-				order.append(colour)
+		if os.path.exists(keyFile):
+			with codecs.open(keyFile, "r", "utf-8") as file:
+				for line in file:
+					colour = re.match(r".*?(?=\=)", line).group(0)
+					label = re.search(r"(?<=\=).*", line).group(0)
+					colourLabels[colour] = label
+					order.append(colour)
 		#print "__colourLabels:", colourLabels, order
 		return colourLabels, order
 	
