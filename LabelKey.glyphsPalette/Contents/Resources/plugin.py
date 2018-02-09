@@ -66,12 +66,12 @@ class labelKey(PalettePlugin):
 		keyDiameter = 10
 		height = view.bounds().size.height
 		for num, i in enumerate(self.order, 1):
-                    if bool(re.search(r"\d", i)):
-                        duplicateColour = re.match(r".*?(?=\d)", i).group(0)
-                        self.colours[duplicateColour].set()
-                    else:    
-			self.colours[i].set()
-		    NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
+			if bool(re.search(r"\d", i)):
+				duplicateColour = re.match(r".*?(?=\d)", i).group(0)
+				self.colours[duplicateColour].set()
+			else:
+				self.colours[i].set()
+			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
 
 	def getKeyFile( self ):
 		keyFile = None
@@ -89,12 +89,13 @@ class labelKey(PalettePlugin):
 	def mapKeys( self, keyFile ):
 		order = []
 		colourLabels = {}
-		with codecs.open(keyFile, "r", "utf-8") as file:
-			for line in file:
-				colour = re.match(r".*?(?=\=)", line).group(0)
-				label = re.search(r"(?<=\=).*", line).group(0)
-				colourLabels[colour] = label
-				order.append(colour)
+		if os.path.exists(keyFile):
+			with codecs.open(keyFile, "r", "utf-8") as file:
+				for line in file:
+					colour = re.match(r".*?(?=\=)", line).group(0)
+					label = re.search(r"(?<=\=).*", line).group(0)
+					colourLabels[colour] = label
+					order.append(colour)
 		#print "__colourLabels:", colourLabels, order
 		return colourLabels, order
 	
@@ -103,6 +104,7 @@ class labelKey(PalettePlugin):
 			self._windowController = windowController
 			self.update(None)
 		except:
+			import traceback
 			self.logError(traceback.format_exc())
 
 	def __file__(self):
