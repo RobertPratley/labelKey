@@ -53,6 +53,7 @@ class labelKey(PalettePlugin):
 			color = NSUnarchiver.unarchiveObjectWithData_(colorData)
 			colours.append(color)
 		self.colours = dict(zip(colorKeys, colours))
+		self.order = []
 
 	@objc.python_method
 	def update(self, sender):
