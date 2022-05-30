@@ -84,15 +84,12 @@ class labelKey(PalettePlugin):
 		keyDiameter = 10
 		height = view.bounds().size.height
 		for num, i in enumerate(self.order, 1):
-			print(num)
-			print(i)
 			if bool(re.search(r"\d", i)):
 				duplicateColour = re.match(r".*?(?=\d)", i).group(0)
 				self.colours[duplicateColour].set()
 			else:
 				NSColor.colorWithRed_green_blue_alpha_(*(self.colours[i])).set()
 			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
-			print("PRINT")
 
 	@objc.python_method
 	def getKeyFile(self):
@@ -106,14 +103,24 @@ class labelKey(PalettePlugin):
 			pass
 		if keyFile is None:
 			keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/Info/labelkey.txt')
+
+		if not os.path.exists(keyFile):
+			f = open(keyFile,"w+")
+			f.write("red=Red\norange=Orange\nbrown=Brown\nyellow=Yellow\nlightGreen=Light green\ndarkGreen=Dark green\nlightBlue=Light blue\ndarkBlue=Dark blue\npurple=Purple\nmagenta=Magenta\nlightGray=Light Gray\ncharcoal=Charcoal") 
+		else:
+			pass
 		return keyFile
+
+
 	@objc.python_method
 	def mapKeys(self, keyFile):
+
 		order = []
 		colourLabels = {}
 		if os.path.exists(keyFile):
 			with codecs.open(keyFile, "r", "utf-8") as file:
 				for line in file:
+					
 					colour = re.match(r".*?(?=\=)", line).group(0)
 					label = re.search(r"(?<=\=).*", line).group(0)
 					colourLabels[colour] = label
