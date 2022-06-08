@@ -1,4 +1,5 @@
 # encoding: utf-8
+from __future__ import division, print_function, unicode_literals
 
 ###########################################################################################################
 #
@@ -11,6 +12,7 @@
 #
 ###########################################################################################################
 from vanilla import *
+import objc
 import re
 import os
 import codecs
@@ -19,8 +21,8 @@ from GlyphsApp.UI import *
 
 class labelKey(PalettePlugin):
 
-
-	def settings( self ):
+	@objc.python_method
+	def settings(self):
 		self.name = 'Label Key'
 		self.width = 160
 		self.elementHeight = 16
@@ -33,7 +35,7 @@ class labelKey(PalettePlugin):
 		
 		self.dialog = self.paletteView.frame.getNSView()
 		
-		colorsData = Glyphs.defaults["LabelColors"]
+		#colorsData = GSGlyphsInfo.labelColors()
 		colorKeys = ["red",
 					"orange",
 					"brown",
@@ -46,12 +48,27 @@ class labelKey(PalettePlugin):
 					"magenta",
 					"lightGray",
 					"charcoal"]
-		colours = []
-		for colorData in colorsData:
-			color = NSUnarchiver.unarchiveObjectWithData_(colorData)
-			colours.append(color)
+		colours = [
+			(0.85, 0.26, 0.06, 0.9),
+			(0.99, 0.62, 0.11, 0.9),
+			(0.65, 0.48, 0.20, 0.9),
+			(0.97, 0.90, 0.00, 0.9),
+			(0.67, 0.95, 0.38, 0.9),
+			(0.04, 0.57, 0.04, 0.9),
+			(0.06, 0.60, 0.98, 0.9),
+			(0.00, 0.20, 0.88, 0.9),
+			(0.50, 0.09, 0.79, 0.9),
+			(0.98, 0.36, 0.67, 0.9),
+			(0.75, 0.75, 0.75, 0.9),
+			(0.25, 0.25, 0.25, 0.9),
+			]
+		# for colorData in colorsData:
+		# 	color = NSUnarchiver.unarchiveObjectWithData_(colorData)
+		# 	colours.append(color)
 		self.colours = dict(zip(colorKeys, colours))
+		self.order = []
 
+	@objc.python_method
 	def update(self, sender):
 		if hasattr(self.paletteView.frame, 'labels'):
 			delattr(self.paletteView.frame, 'labels')
@@ -62,7 +79,8 @@ class labelKey(PalettePlugin):
 		newHeight = self.elementHeight * len(self.order)
 		self.paletteView.frame.resize(self.width, newHeight + 10)
 
-	def draw( self, view ):
+	@objc.python_method
+	def draw(self, view):
 		keyDiameter = 10
 		height = view.bounds().size.height
 		for num, i in enumerate(self.order, 1):
@@ -70,10 +88,11 @@ class labelKey(PalettePlugin):
 				duplicateColour = re.match(r".*?(?=\d)", i).group(0)
 				self.colours[duplicateColour].set()
 			else:
-				self.colours[i].set()
+				NSColor.colorWithRed_green_blue_alpha_(*(self.colours[i])).set()
 			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
 
-	def getKeyFile( self ):
+	@objc.python_method
+	def getKeyFile(self):
 		keyFile = None
 		try:
 			thisDirPath = os.path.dirname(self.windowController().document().font.filepath)
@@ -84,14 +103,24 @@ class labelKey(PalettePlugin):
 			pass
 		if keyFile is None:
 			keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/Info/labelkey.txt')
+
+		if not os.path.exists(keyFile):
+			f = open(keyFile,"w+")
+			f.write("red=Red\norange=Orange\nbrown=Brown\nyellow=Yellow\nlightGreen=Light green\ndarkGreen=Dark green\nlightBlue=Light blue\ndarkBlue=Dark blue\npurple=Purple\nmagenta=Magenta\nlightGray=Light Gray\ncharcoal=Charcoal") 
+		else:
+			pass
 		return keyFile
 
-	def mapKeys( self, keyFile ):
+
+	@objc.python_method
+	def mapKeys(self, keyFile):
+
 		order = []
 		colourLabels = {}
 		if os.path.exists(keyFile):
 			with codecs.open(keyFile, "r", "utf-8") as file:
 				for line in file:
+					
 					colour = re.match(r".*?(?=\=)", line).group(0)
 					label = re.search(r"(?<=\=).*", line).group(0)
 					colourLabels[colour] = label
@@ -107,6 +136,7 @@ class labelKey(PalettePlugin):
 			import traceback
 			self.logError(traceback.format_exc())
 
+	@objc.python_method
 	def __file__(self):
 		"""Please leave this method unchanged"""
 		return __file__
