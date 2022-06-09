@@ -1,4 +1,5 @@
 # encoding: utf-8
+from __future__ import division, print_function, unicode_literals
 
 ###########################################################################################################
 #
@@ -11,6 +12,7 @@
 #
 ###########################################################################################################
 from vanilla import *
+import objc
 import re
 import os
 import codecs
@@ -19,8 +21,8 @@ from GlyphsApp.UI import *
 
 class labelKey(PalettePlugin):
 
-
-	def settings( self ):
+	@objc.python_method
+	def settings(self):
 		self.name = 'Label Key'
 		self.width = 160
 		self.elementHeight = 16
@@ -51,7 +53,9 @@ class labelKey(PalettePlugin):
 			color = NSUnarchiver.unarchiveObjectWithData_(colorData)
 			colours.append(color)
 		self.colours = dict(zip(colorKeys, colours))
+		self.order = []
 
+	@objc.python_method
 	def update(self, sender):
 		if hasattr(self.paletteView.frame, 'labels'):
 			delattr(self.paletteView.frame, 'labels')
@@ -62,7 +66,8 @@ class labelKey(PalettePlugin):
 		newHeight = self.elementHeight * len(self.order)
 		self.paletteView.frame.resize(self.width, newHeight + 10)
 
-	def draw( self, view ):
+	@objc.python_method
+	def draw(self, view):
 		keyDiameter = 10
 		height = view.bounds().size.height
 		for num, i in enumerate(self.order, 1):
@@ -73,7 +78,8 @@ class labelKey(PalettePlugin):
 				self.colours[i].set()
 			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
 
-	def getKeyFile( self ):
+	@objc.python_method
+	def getKeyFile(self):
 		keyFile = None
 		try:
 			thisDirPath = os.path.dirname(self.windowController().document().font.filepath)
@@ -85,8 +91,8 @@ class labelKey(PalettePlugin):
 		if keyFile is None:
 			keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/Info/labelkey.txt')
 		return keyFile
-
-	def mapKeys( self, keyFile ):
+	@objc.python_method
+	def mapKeys(self, keyFile):
 		order = []
 		colourLabels = {}
 		if os.path.exists(keyFile):
@@ -107,6 +113,7 @@ class labelKey(PalettePlugin):
 			import traceback
 			self.logError(traceback.format_exc())
 
+	@objc.python_method
 	def __file__(self):
 		"""Please leave this method unchanged"""
 		return __file__
