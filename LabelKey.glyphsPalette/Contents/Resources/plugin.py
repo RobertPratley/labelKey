@@ -25,11 +25,11 @@ class labelKey(PalettePlugin):
 	def settings(self):
 		self.name = 'Label Key'
 		self.width = 160
-		self.elementHeight = 16
+		self.elementHeight = 17
 		keyQuantity = 12
 		self.height = keyQuantity * self.elementHeight
 		self.paletteView = Window((self.width, self.height + 10))
-		self.paletteView.frame = Group((0, 0, self.width, self.height + 5))
+		self.paletteView.frame = Group((0, 0, self.width, self.height + 10))
 		
 		self.paletteView.frame.swatches = CanvasView((10, 0, -10, 0), self)
 		
@@ -66,16 +66,18 @@ class labelKey(PalettePlugin):
 		# 	color = NSUnarchiver.unarchiveObjectWithData_(colorData)
 		# 	colours.append(color)
 		self.colours = dict(zip(colorKeys, colours))
-		self.order = []
+		self.order = self.mapKeys(self.getKeyFile())
 
 	@objc.python_method
 	def update(self, sender):
 		if hasattr(self.paletteView.frame, 'labels'):
 			delattr(self.paletteView.frame, 'labels')
 		colourLabels, self.order = self.mapKeys(self.getKeyFile())
-		self.paletteView.frame.labels = Group((27, 4, -10, 0))
+		self.paletteView.frame.labels = Group((0, 4, -10, 0))
 		for num, i in enumerate(self.order):
-			setattr(self.paletteView.frame.labels, i, TextBox((0, num * self.elementHeight, 0, 22), colourLabels[i], sizeStyle="small"))
+			setattr(self.paletteView.frame.labels, i, TextBox((24, num * self.elementHeight, 0, 22), colourLabels[i], sizeStyle="small"))
+
+	
 		newHeight = self.elementHeight * len(self.order)
 		self.paletteView.frame.resize(self.width, newHeight + 10)
 
@@ -85,32 +87,37 @@ class labelKey(PalettePlugin):
 		height = view.bounds().size.height
 		for num, i in enumerate(self.order, 1):
 			if bool(re.search(r"\d", i)):
+				
 				duplicateColour = re.match(r".*?(?=\d)", i).group(0)
 				self.colours[duplicateColour].set()
 			else:
 				NSColor.colorWithRed_green_blue_alpha_(*(self.colours[i])).set()
-			NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
+				
+				NSBezierPath.bezierPathWithOvalInRect_(((0, height - (num * self.elementHeight)), (keyDiameter, keyDiameter))).fill()
 
 	@objc.python_method
 	def getKeyFile(self):
 		keyFile = None
+
+		# Get colorNames.txt file next to Glyph file
 		try:
 			thisDirPath = os.path.dirname(self.windowController().document().font.filepath)
-			localKeyFile = thisDirPath + '/labelkey.txt'
+			localKeyFile = thisDirPath + '/colorNames.txt'
 			if os.path.exists(localKeyFile):
 				keyFile = localKeyFile
 		except:
 			pass
 		if keyFile is None:
-			keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/Info/labelkey.txt')
-
-		if not os.path.exists(keyFile):
+			if Glyphs.versionString.startswith("3"):
+				keyFile = os.path.expanduser('~/Library/Application Support/Glyphs 3/info/colorNames.txt')
+			else:
+				keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/info/colorNames.txt')
+		if not os.path.exists(keyFile):	
 			f = open(keyFile,"w+")
-			f.write("red=Red\norange=Orange\nbrown=Brown\nyellow=Yellow\nlightGreen=Light green\ndarkGreen=Dark green\nlightBlue=Light blue\ndarkBlue=Dark blue\npurple=Purple\nmagenta=Magenta\nlightGray=Light Gray\ncharcoal=Charcoal") 
+			f.write("None=🫥 None\nred=🚨 Red\norange=🦊 Orange\nbrown=🪵 Brown\nyellow=🌼 Yellow\nlightGreen=🍀 Light green\ndarkGreen=🫑 Dark green\nlightBlue=💎 Light blue\ndarkBlue=🌀 Dark blue\npurple=🔮 Purple\nmagenta=🌺 Magenta\nlightGray=🏐 Light Gray\ncharcoal=🎱 Charcoal") 
 		else:
 			pass
 		return keyFile
-
 
 	@objc.python_method
 	def mapKeys(self, keyFile):
@@ -120,6 +127,7 @@ class labelKey(PalettePlugin):
 		if os.path.exists(keyFile):
 			with codecs.open(keyFile, "r", "utf-8") as file:
 				for line in file:
+					if "None" in line: continue
 					
 					colour = re.match(r".*?(?=\=)", line).group(0)
 					label = re.search(r"(?<=\=).*", line).group(0)
