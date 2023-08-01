@@ -97,27 +97,35 @@ class labelKey(PalettePlugin):
 
 	@objc.python_method
 	def getKeyFile(self):
-		keyFile = None
-
+		keyFilePath = None
+		keyFileName = 'colorNames.txt'
 		# Get colorNames.txt file next to Glyph file
 		try:
-			thisDirPath = os.path.dirname(self.windowController().document().font.filepath)
-			localKeyFile = thisDirPath + '/colorNames.txt'
-			if os.path.exists(localKeyFile):
-				keyFile = localKeyFile
+			thisDirPath = os.path.dirname(self.windowController().document().fileURL().path())
+			localKeyFilePath = os.path.join(thisDirPath, keyFileName)
+			if os.path.exists(localKeyFilePath):
+				keyFilePath = localKeyFilePath
 		except:
 			pass
-		if keyFile is None:
-			if Glyphs.versionString.startswith("3"):
-				keyFile = os.path.expanduser('~/Library/Application Support/Glyphs 3/info/colorNames.txt')
+		if keyFilePath is None:
+
+			if Glyphs.versionNumber >= 3:
+				keyFolderPath = '~/Library/Application Support/Glyphs 3/Info'
 			else:
-				keyFile = os.path.expanduser('~/Library/Application Support/Glyphs/info/colorNames.txt')
-		if not os.path.exists(keyFile):	
-			f = open(keyFile,"w+")
-			f.write("None=🫥 None\nred=🚨 Red\norange=🦊 Orange\nbrown=🪵 Brown\nyellow=🌼 Yellow\nlightGreen=🍀 Light green\ndarkGreen=🫑 Dark green\nlightBlue=💎 Light blue\ndarkBlue=🌀 Dark blue\npurple=🔮 Purple\nmagenta=🌺 Magenta\nlightGray=🏐 Light Gray\ncharcoal=🎱 Charcoal") 
-		else:
-			pass
-		return keyFile
+				keyFolderPath = '~/Library/Application Support/Glyphs/Info'
+
+			keyFolderPath = os.path.expanduser(keyFolderPath)
+
+			if not os.path.exists(keyFolderPath):
+				os.makedirs(keyFolderPath)
+			
+			keyFilePath = os.path.join(keyFolderPath, keyFileName)
+			if not os.path.exists(keyFilePath):
+				f = codecs.open(keyFilePath, mode="w", encoding="utf-8")
+				f.write("None=🫥 None\nred=🚨 Red\norange=🦊 Orange\nbrown=🪵 Brown\nyellow=🌼 Yellow\nlightGreen=🍀 Light green\ndarkGreen=🫑 Dark green\nlightBlue=💎 Light blue\ndarkBlue=🌀 Dark blue\npurple=🔮 Purple\nmagenta=🌺 Magenta\nlightGray=🏐 Light Gray\ncharcoal=🎱 Charcoal")
+				f.close()
+
+		return keyFilePath
 
 	@objc.python_method
 	def mapKeys(self, keyFile):
